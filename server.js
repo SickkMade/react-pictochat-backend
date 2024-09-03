@@ -3,9 +3,16 @@ const app = express()
 const http = require('http');
 const { Server } = require('socket.io')
 const cors = require('cors')
+const origins = ['https://react-pictochat.netlify.app', 'localhost:5173']
 
 app.use(cors({
-    origin: ['https://react-pictochat.netlify.app', 'localhost:5173'],
+    origin: function (origin, callback) {
+        if (!origin || origins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
