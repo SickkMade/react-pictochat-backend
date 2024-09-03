@@ -4,7 +4,12 @@ const http = require('http');
 const { Server } = require('socket.io')
 const cors = require('cors')
 
-app.use(cors())
+app.use(cors({
+    origin: 'https://react-pictochat.netlify.app',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+}));
 
 const server = http.createServer(app)
 
