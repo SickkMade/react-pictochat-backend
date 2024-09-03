@@ -15,7 +15,7 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
     cors:{
-        origin: 'https://react-pictochat.netlify.app/',
+        origin: 'https://react-pictochat.netlify.app',
         methods:["GET", "POST"]
     },
 })
