@@ -20,14 +20,23 @@ const io = new Server(server, {
     },
 })
 
+const users = {}
+
 io.on('connection', socket => {
     socket.on('send-message', message => {
         socket.broadcast.emit('new-message', message)
         socket.emit('new-message', message)
     })
     socket.on('user-joined', name => {
+        if(users[socket.id]) return;
+        users[socket.id] = name
         socket.broadcast.emit('new-message', `${name} joined the server`)
         socket.emit('new-message', `${name} joined the server`)
+    })
+    socket.on('disconnect', () => {
+        socket.broadcast.emit('new-message', `${users[socket.id]} left the server`)
+        socket.emit('new-message', `${users[socket.id]} left the server`)
+        delete users[socket.id]
     })
 })
 
