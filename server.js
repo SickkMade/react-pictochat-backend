@@ -30,12 +30,25 @@ io.on('connection', socket => {
     socket.on('user-joined', name => {
         if(users[socket.id]) return;
         users[socket.id] = name
-        socket.broadcast.emit('new-message', `${name} joined the server`)
-        socket.emit('new-message', `${name} joined the server`)
+
+        let data = {
+            type:'text',
+            data:`${name} joined the server`,
+            username:'ifyouseethisitisabug',
+        }
+
+        socket.broadcast.emit('new-message', data)
+        socket.emit('new-message', data)
     })
     socket.on('disconnect', () => {
-        socket.broadcast.emit('new-message', `${users[socket.id]} left the server`)
-        socket.emit('new-message', `${users[socket.id]} left the server`)
+        let data = {
+            type:'text',
+            data:`${users[socket.id]} left the server`,
+            username:'ifyouseethisitisabug',
+        }
+
+        socket.broadcast.emit('new-message', data)
+        socket.emit('new-message', data)
         delete users[socket.id]
     })
 })
